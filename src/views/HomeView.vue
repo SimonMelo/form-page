@@ -27,8 +27,15 @@
           />
         </a-tab-pane>
         <a-tab-pane key="3" tab="Informações Adicionais" :disabled="permissionOkAddInfo"
-          >Tab 3</a-tab-pane
-        >
+          ><ExtraInfo
+            :formState="formState.extra"
+            :activeKey="activeKey"
+            :validateStatus="validateStatus.extraStatus"
+            :loading="loading"
+            :helpText="helpText.extraText"
+            @update:activeKey="handleUpdateActiveKey"
+            @update:permissionOkAddInfo="handleUpdatePermissionExtra"
+        /></a-tab-pane>
       </a-tabs>
     </div>
   </section>
@@ -38,6 +45,7 @@
 <script setup>
 import ContactInfo from '../components/ContactInfo.vue'
 import PreferenceInfo from '../components/PreferenceInfo.vue'
+import ExtraInfo from '../components/ExtraInfo.vue'
 import { ref, reactive } from 'vue'
 
 const activeKey = ref('1')
@@ -57,6 +65,10 @@ const handleUpdatePermissionAdd = (newValue) => {
   permissionOkAddInfo.value = newValue
 }
 
+const handleUpdatePermissionExtra = (newValue) => {
+  permissionOkAddInfo.value = newValue
+}
+
 const formState = reactive({
   contact: {
     name: '',
@@ -68,6 +80,11 @@ const formState = reactive({
     location: '',
     locationOther: '',
     price: ''
+  },
+  extra: {
+    metImmobile: '',
+    time: '',
+    addInfo: ''
   }
 })
 
@@ -87,6 +104,11 @@ const validateStatus = ref({
     location: '',
     locationOther: '',
     price: ''
+  },
+  extraStatus: {
+    metImmobile: '',
+    time: '',
+    addInfo: ''
   }
 })
 
@@ -101,7 +123,11 @@ const helpText = ref({
     location: '',
     locationOther: '',
     price: ''
+  },
+  extraText: {
+    metImmobile: '',
+    time: '',
+    addInfo: ''
   }
 })
 </script>
-../components/PreferenceInfo.vue

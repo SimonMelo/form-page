@@ -18,7 +18,11 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item v-if="localPreference.location === 'Other'">
+            <a-form-item
+              :validateStatus="status.locationOther"
+              :help="text.locationOther"
+              v-if="localPreference.location === 'Other'"
+            >
               <a-input
                 placeholder="Que outro lugar você procura?"
                 v-model:value="localPreference.locationOther"
@@ -51,6 +55,9 @@
           </div>
 
           <div class="btn-continue" style="text-align: center">
+            <a-button style="margin-right: 10px" type="primary" @click="handleBack"
+              >Voltar</a-button
+            >
             <a-button type="primary" html-type="submit">Continue</a-button>
           </div>
         </a-form>
@@ -60,7 +67,7 @@
 </template>
 
 <script setup>
-import { reactive, defineProps, defineEmits } from 'vue'
+import { reactive, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps(['preference', 'preferenceText', 'preferenceStatus', 'loading'])
 const emit = defineEmits(['update:activeKey', 'update:permissionOkAddInfo'])
@@ -81,6 +88,17 @@ const district = {
   Other: 'Outro'
 }
 
+watch(localPreference, () => {
+  status.immobile = ''
+  status.location = ''
+  status.locationOther = ''
+  status.price = ''
+  text.immobile = ''
+  text.location = ''
+  text.locationOther = ''
+  text.price = ''
+})
+
 const prices = {
   1: 'Entre R$150 mil e R$250 mil',
   2: 'Entre R$250 mil e R$350 mil',
@@ -95,6 +113,10 @@ const validateField = (fieldName) => {
   const validation = { valid: true, message: '' }
 
   if (!value) {
+    validation.valid = false
+    validation.message = 'Preencha esse campo.'
+    status[fieldName] = 'error'
+  } else if (localPreference.location === 'Other') {
     validation.valid = false
     validation.message = 'Preencha esse campo.'
     status[fieldName] = 'error'
@@ -115,6 +137,11 @@ const handleButton = async () => {
   if (validImmobile.valid && validLocation.valid && validPrice.valid) {
     emit('update:activeKey', '3')
     emit('update:permissionOkAddInfo', false)
+    console.log(localPreference)
   }
+}
+
+const handleBack = async () => {
+  emit('update:activeKey', '1')
 }
 </script>

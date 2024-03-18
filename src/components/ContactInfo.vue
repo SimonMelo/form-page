@@ -138,6 +138,7 @@ const handleButton = async () => {
 
   if (validName.valid && validEmail.valid && validPhone.valid) {
     emit('update:activeKey', '2')
+    console.log(localContact)
     emit('update:permissionOkPreference', false)
   }
 }
