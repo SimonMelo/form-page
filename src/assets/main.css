@@ -22,7 +22,7 @@ body::after {
   margin: 0;
 }
 
-p {
+#p-text {
   color: #cdb182;
   font-size: 14px;
   font-weight: bold;
@@ -82,4 +82,32 @@ a-button {
   display: block;
   margin: 0 auto;
   margin-top: -80px !important;
+}
+
+.custom-spin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  transition: opacity 5s;
+}
+
+a {
+  text-decoration: none;
+  color: #cdb182;
+}
+
+.p-contact {
+  font-weight: bold;
+  color: #cdb182;
+}
+
+.contact-div {
+  margin-top: -30px;
 }

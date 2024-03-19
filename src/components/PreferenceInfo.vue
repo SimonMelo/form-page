@@ -3,7 +3,7 @@
     <section class="row justify-content-center">
       <div class="col-md-9">
         <div>
-          <p style="font-size: 13px">
+          <p id="p-text" style="font-size: 13px">
             Para oferecer as melhores opções, precisamos de mais detalhes!
           </p>
         </div>
@@ -70,7 +70,11 @@
 import { reactive, defineProps, defineEmits, watch } from 'vue'
 
 const props = defineProps(['preference', 'preferenceText', 'preferenceStatus', 'loading'])
-const emit = defineEmits(['update:activeKey', 'update:permissionOkAddInfo'])
+const emit = defineEmits([
+  'update:activeKey',
+  'update:permissionOkAddInfo',
+  'update:permissionOkPreference'
+])
 
 const status = reactive({ ...props.preferenceStatus })
 const text = reactive({ ...props.preferenceText })
@@ -137,11 +141,11 @@ const handleButton = async () => {
   if (validImmobile.valid && validLocation.valid && validPrice.valid) {
     emit('update:activeKey', '3')
     emit('update:permissionOkAddInfo', false)
-    console.log(localPreference)
   }
 }
 
 const handleBack = async () => {
   emit('update:activeKey', '1')
+  emit('update:permissionOkPreference', true)
 }
 </script>

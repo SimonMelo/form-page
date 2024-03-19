@@ -3,7 +3,7 @@
     <section class="row justify-content-center">
       <div class="col-md-9">
         <div>
-          <p>Antes de tudo, nos informe suas informações para contato!</p>
+          <p id="p-text">Antes de tudo, nos informe suas informações para contato!</p>
         </div>
 
         <a-form :model="localContact" @finish="handleButton">

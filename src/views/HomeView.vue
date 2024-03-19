@@ -1,45 +1,46 @@
 <template>
-  <img src="../../public/img/nameLincolin.png" class="img-fluid centered-image" />
-  <section class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card-container">
-      <a-tabs v-model:activeKey="activeKey" centered>
-        <a-tab-pane key="1" tab="Informações Pessoais">
-          <ContactInfo
-            :formState="formState.contact"
-            :activeKey="activeKey"
-            :validateStatus="validateStatus.contactStatus"
-            :loading="loading"
-            :helpText="helpText.contactText"
-            :permissionOkPreference="permissionOkPreference"
-            @update:activeKey="handleUpdateActiveKey"
-            @update:permissionOkPreference="handleUpdatePermission"
-          />
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="Objetivos e Preferências" :disabled="permissionOkPreference">
-          <PreferenceInfo
-            :formState="formState.preference"
-            :activeKey="activeKey"
-            :validateStatus="validateStatus.preferenceStatus"
-            :loading="loading"
-            :helpText="helpText.preferenceText"
-            @update:activeKey="handleUpdateActiveKey"
-            @update:permissionOkAddInfo="handleUpdatePermissionAdd"
-          />
-        </a-tab-pane>
-        <a-tab-pane key="3" tab="Informações Adicionais" :disabled="permissionOkAddInfo"
-          ><ExtraInfo
-            :formState="formState.extra"
-            :activeKey="activeKey"
-            :validateStatus="validateStatus.extraStatus"
-            :loading="loading"
-            :helpText="helpText.extraText"
-            @update:activeKey="handleUpdateActiveKey"
-            @update:permissionOkAddInfo="handleUpdatePermissionExtra"
-        /></a-tab-pane>
-      </a-tabs>
-    </div>
-  </section>
-  <img src="../../public/img/imovelIcon.png" class="img-fluid centered-image-icon" />
+  <div>
+    <img src="../../public/img/nameLincolin.png" class="img-fluid centered-image" />
+    <section class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+      <div class="card-container">
+        <a-tabs v-model:activeKey="activeKey" centered>
+          <a-tab-pane key="1" tab="Informações Pessoais">
+            <ContactInfo
+              :formState="formState.contact"
+              :activeKey="activeKey"
+              :validateStatus="validateStatus.contactStatus"
+              :helpText="helpText.contactText"
+              :permissionOkPreference="permissionOkPreference"
+              @update:activeKey="handleUpdateActiveKey"
+              @update:permissionOkPreference="handleUpdatePermission"
+            />
+          </a-tab-pane>
+          <a-tab-pane key="2" tab="Objetivos e Preferências" :disabled="permissionOkPreference">
+            <PreferenceInfo
+              :formState="formState.preference"
+              :activeKey="activeKey"
+              :validateStatus="validateStatus.preferenceStatus"
+              :helpText="helpText.preferenceText"
+              @update:activeKey="handleUpdateActiveKey"
+              @update:permissionOkAddInfo="handleUpdatePermissionAdd"
+              @update:permissionOkPreference="handleUpdatePermission"
+            />
+          </a-tab-pane>
+          <a-tab-pane key="3" tab="Informações Adicionais" :disabled="permissionOkAddInfo">
+            <ExtraInfo
+              :formState="formState.extra"
+              :activeKey="activeKey"
+              :validateStatus="validateStatus.extraStatus"
+              :helpText="helpText.extraText"
+              @update:activeKey="handleUpdateActiveKey"
+              @update:permissionOkAddInfo="handleUpdatePermissionExtra"
+            />
+          </a-tab-pane>
+        </a-tabs>
+      </div>
+    </section>
+    <img src="../../public/img/imovelIcon.png" class="img-fluid centered-image-icon" />
+  </div>
 </template>
 
 <script setup>
@@ -86,11 +87,6 @@ const formState = reactive({
     time: '',
     addInfo: ''
   }
-})
-
-const loading = ref({
-  loadingButton: false,
-  loadingScreen: false
 })
 
 const validateStatus = ref({
