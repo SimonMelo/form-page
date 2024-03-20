@@ -6,13 +6,13 @@
           <p id="p-text">Antes de tudo, nos informe suas informações para contato!</p>
         </div>
 
-        <a-form :model="localContact" @finish="handleButton">
+        <a-form :model="localContact.contact" @finish="handleButton">
           <div class="input-space">
             <label>Nome Completo:</label>
             <a-form-item :validateStatus="status.name" :help="text.name" required>
               <a-input
                 placeholder="Seu nome"
-                v-model:value="localContact.name"
+                v-model:value="localContact.contact.name"
                 @input="selectorInput('name', $event)"
               >
                 <template #prefix>
@@ -27,7 +27,7 @@
             <a-form-item :validateStatus="status.email" :help="text.email" required>
               <a-input
                 placeholder="email@.com"
-                v-model:value="localContact.email"
+                v-model:value="localContact.contact.email"
                 @input="selectorInput('email', $event)"
               >
                 <template #prefix>
@@ -42,7 +42,7 @@
             <a-form-item :validateStatus="status.phone" :help="text.phone" required>
               <a-input
                 placeholder="(99) 99999-9999"
-                v-model:value="localContact.phone"
+                v-model:value="localContact.contact.phone"
                 @input="selectorInput('phone', $event)"
               >
                 <template #prefix>
@@ -68,9 +68,9 @@ import { matchEmail } from '../utils/emailUtils'
 import { matchPhone, maskPhone } from '../utils/phoneUtils'
 
 const emit = defineEmits(['update:activeKey', 'update:permissionOkPreference'])
-const props = defineProps(['contact', 'contactText', 'contactStatus', 'loading'])
+const props = defineProps(['formState', 'contactText', 'contactStatus', 'loading'])
 
-const localContact = reactive({ ...props.contact })
+const localContact = reactive({ ...props.formState })
 const status = reactive({ ...props.contactStatus })
 const text = reactive({ ...props.contactText })
 
@@ -82,21 +82,21 @@ const selectorInput = (fieldName, event) => {
   switch (fieldName) {
     case 'name':
       nameValue = value.slice(0, 120).trimStart()
-      localContact.name = nameValue
+      localContact.contact.name = nameValue
       status.name = ''
       text.name = ''
       break
 
     case 'email':
       emailValue = value.slice(0, 120).trim()
-      localContact.email = emailValue
+      localContact.contact.email = emailValue
       status.email = ''
       text.email = ''
       break
 
     case 'phone':
       phoneValue = value.replace(/\D/g, '').substring(0, 11)
-      localContact.phone = maskPhone(phoneValue)
+      localContact.contact.phone = maskPhone(phoneValue)
       status.phone = ''
       text.phone = ''
       break
@@ -107,7 +107,7 @@ const selectorInput = (fieldName, event) => {
 }
 
 const validateField = (fieldName) => {
-  const value = localContact[fieldName]
+  const value = localContact.contact[fieldName]
   const validation = { valid: true, message: '' }
 
   if (!value) {
@@ -138,7 +138,6 @@ const handleButton = async () => {
 
   if (validName.valid && validEmail.valid && validPhone.valid) {
     emit('update:activeKey', '2')
-    console.log(localContact)
     emit('update:permissionOkPreference', false)
   }
 }

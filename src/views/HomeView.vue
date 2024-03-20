@@ -6,7 +6,7 @@
         <a-tabs v-model:activeKey="activeKey" centered>
           <a-tab-pane key="1" tab="Informações Pessoais">
             <ContactInfo
-              :formState="formState.contact"
+              :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.contactStatus"
               :helpText="helpText.contactText"
@@ -17,7 +17,7 @@
           </a-tab-pane>
           <a-tab-pane key="2" tab="Objetivos e Preferências" :disabled="permissionOkPreference">
             <PreferenceInfo
-              :formState="formState.preference"
+              :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.preferenceStatus"
               :helpText="helpText.preferenceText"
@@ -28,12 +28,13 @@
           </a-tab-pane>
           <a-tab-pane key="3" tab="Informações Adicionais" :disabled="permissionOkAddInfo">
             <ExtraInfo
-              :formState="formState.extra"
+              :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.extraStatus"
               :helpText="helpText.extraText"
               @update:activeKey="handleUpdateActiveKey"
               @update:permissionOkAddInfo="handleUpdatePermissionExtra"
+              :finallyForm="finallyForm"
             />
           </a-tab-pane>
         </a-tabs>
@@ -47,6 +48,7 @@
 import ContactInfo from '../components/ContactInfo.vue'
 import PreferenceInfo from '../components/PreferenceInfo.vue'
 import ExtraInfo from '../components/ExtraInfo.vue'
+import { formPOST } from '../services/submit-form'
 import { ref, reactive } from 'vue'
 
 const activeKey = ref('1')
@@ -88,6 +90,31 @@ const formState = reactive({
     addInfo: ''
   }
 })
+
+const finallyForm = () => {
+  const { contact, preference, extra } = formState
+
+  const formData = {
+    contact: {
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone
+    },
+    preference: {
+      immobile: preference.immobile,
+      location: preference.location,
+      locationOther: preference.locationOther,
+      price: preference.price
+    },
+    extra: {
+      metImmobile: extra.metImmobile,
+      time: extra.time,
+      addInfo: extra.addInfo
+    }
+  }
+
+  formPOST(formData)
+}
 
 const validateStatus = ref({
   contactStatus: {

@@ -8,11 +8,11 @@
           </p>
         </div>
 
-        <a-form :model="localExtra" @finish="handleButton">
+        <a-form :model="localExtra.extra" @finish="handleButton">
           <div class="input-space">
             <label>Como você conheceu a imobiliária?</label>
             <a-form-item :validateStatus="status.metImmobile" :help="text.metImmobile" required>
-              <a-select placeholder="Selecione" v-model:value="localExtra.metImmobile">
+              <a-select placeholder="Selecione" v-model:value="localExtra.extra.metImmobile">
                 <a-select-option v-for="(value, key) in knowImmobile" :key="key" :value="key">
                   {{ value }}
                 </a-select-option>
@@ -23,7 +23,7 @@
           <div class="input-space">
             <label>Qual o melhor horário para entrarmos em contato com você?</label>
             <a-form-item :validateStatus="status.time" :help="text.time" required>
-              <a-radio-group v-model:value="localExtra.time">
+              <a-radio-group v-model:value="localExtra.extra.time">
                 <a-radio value="morning">Manhã</a-radio>
                 <a-radio value="afternoon">Tarde</a-radio>
                 <a-radio value="night">Noite</a-radio>
@@ -40,7 +40,7 @@
             <a-form-item :validateStatus="status.addInfo" :help="text.addInfo" required>
               <a-input
                 placeholder="Que informação seria?"
-                v-model:value="localExtra.addInfo"
+                v-model:value="localExtra.extra.addInfo"
               ></a-input>
             </a-form-item>
           </div>
@@ -60,12 +60,12 @@
 <script setup>
 import { reactive, defineProps, defineEmits } from 'vue'
 
-const props = defineProps(['extra', 'extraText', 'extraStatus', 'loading'])
+const props = defineProps(['formState', 'finallyForm', 'extraText', 'extraStatus', 'loading'])
 const emit = defineEmits(['update:activeKey', 'update:permissionOkAddInfo'])
 
 const status = reactive({ ...props.extraStatus })
 const text = reactive({ ...props.extraText })
-const localExtra = reactive({ ...props.extra })
+const localExtra = reactive({ ...props.formState })
 
 const knowImmobile = {
   ads: 'Anúncio',
@@ -75,7 +75,15 @@ const knowImmobile = {
 }
 
 const handleButton = async () => {
-  console.log(localExtra)
+  props
+    .finallyForm()
+    .then(({ data }) => {
+      window.location.pathname = '/success-form'
+      console.log(`Informações enviadas: ${data}`)
+    })
+    .catch((error) => {
+      console.error(`Deu erro ${error}`)
+    })
 }
 
 const handleBack = async () => {
