@@ -49,7 +49,7 @@
             <a-button style="margin-right: 10px" class="mr-5" type="primary" @click="handleBack"
               >Voltar</a-button
             >
-            <a-button type="primary" html-type="submit">Enviar</a-button>
+            <a-button type="primary" :loading="loadingButton" html-type="submit">Enviar</a-button>
           </div>
         </a-form>
       </div>
@@ -58,14 +58,17 @@
 </template>
 
 <script setup>
-import { reactive, defineProps, defineEmits } from 'vue'
+import { reactive, defineProps, defineEmits, ref } from 'vue'
+import { Modal } from '../AlertModal/Modal'
 
-const props = defineProps(['formState', 'finallyForm', 'extraText', 'extraStatus', 'loading'])
-const emit = defineEmits(['update:activeKey', 'update:permissionOkAddInfo'])
+const props = defineProps(['formState', 'finallyForm', 'extraText', 'extraStatus'])
+const emit = defineEmits(['update:activeKey'])
 
 const status = reactive({ ...props.extraStatus })
 const text = reactive({ ...props.extraText })
 const localExtra = reactive({ ...props.formState })
+
+const loadingButton = ref(false)
 
 const knowImmobile = {
   ads: 'Anúncio',
@@ -74,15 +77,21 @@ const knowImmobile = {
   peoples: 'Indicação de Conhecidos'
 }
 
-const handleButton = async () => {
+const handleButton = () => {
+  loadingButton.value = true
   props
     .finallyForm()
-    .then(({ data }) => {
-      window.location.pathname = '/success-form'
-      console.log(`Informações enviadas: ${data}`)
+    .then(() => {
+      Modal('success', 'Formulário preenchido com sucesso!')
+      setTimeout(() => {
+        window.location.pathname = '/success-form'
+      }, 3000)
     })
     .catch((error) => {
-      console.error(`Deu erro ${error}`)
+      Modal('error', error ? error.response?.data.error : 'Ocorreu um problema interno.')
+    })
+    .finally(() => {
+      loadingButton.value = false
     })
 }
 

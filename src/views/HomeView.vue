@@ -4,36 +4,31 @@
     <section class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
       <div class="card-container">
         <a-tabs v-model:activeKey="activeKey" centered>
-          <a-tab-pane key="1" tab="Informações Pessoais">
+          <a-tab-pane key="1" tab="Informações Pessoais" disabled>
             <ContactInfo
               :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.contactStatus"
               :helpText="helpText.contactText"
-              :permissionOkPreference="permissionOkPreference"
               @update:activeKey="handleUpdateActiveKey"
-              @update:permissionOkPreference="handleUpdatePermission"
             />
           </a-tab-pane>
-          <a-tab-pane key="2" tab="Objetivos e Preferências" :disabled="permissionOkPreference">
+          <a-tab-pane key="2" tab="Objetivos e Preferências" disabled>
             <PreferenceInfo
               :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.preferenceStatus"
               :helpText="helpText.preferenceText"
               @update:activeKey="handleUpdateActiveKey"
-              @update:permissionOkAddInfo="handleUpdatePermissionAdd"
-              @update:permissionOkPreference="handleUpdatePermission"
             />
           </a-tab-pane>
-          <a-tab-pane key="3" tab="Informações Adicionais" :disabled="permissionOkAddInfo">
+          <a-tab-pane key="3" tab="Informações Adicionais" disabled>
             <ExtraInfo
               :formState="formState"
               :activeKey="activeKey"
               :validateStatus="validateStatus.extraStatus"
               :helpText="helpText.extraText"
               @update:activeKey="handleUpdateActiveKey"
-              @update:permissionOkAddInfo="handleUpdatePermissionExtra"
               :finallyForm="finallyForm"
             />
           </a-tab-pane>
@@ -53,23 +48,8 @@ import { ref, reactive } from 'vue'
 
 const activeKey = ref('1')
 
-const permissionOkPreference = ref(true)
-const permissionOkAddInfo = ref(true)
-
 const handleUpdateActiveKey = (newValue) => {
   activeKey.value = newValue
-}
-
-const handleUpdatePermission = (newValue) => {
-  permissionOkPreference.value = newValue
-}
-
-const handleUpdatePermissionAdd = (newValue) => {
-  permissionOkAddInfo.value = newValue
-}
-
-const handleUpdatePermissionExtra = (newValue) => {
-  permissionOkAddInfo.value = newValue
 }
 
 const formState = reactive({
@@ -113,7 +93,7 @@ const finallyForm = () => {
     }
   }
 
-  formPOST(formData)
+  return formPOST(formData)
 }
 
 const validateStatus = ref({

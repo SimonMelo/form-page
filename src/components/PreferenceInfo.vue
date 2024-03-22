@@ -75,12 +75,8 @@
 <script setup>
 import { reactive, defineProps, defineEmits, watch } from 'vue'
 
-const props = defineProps(['formState', 'preferenceText', 'preferenceStatus', 'loading'])
-const emit = defineEmits([
-  'update:activeKey',
-  'update:permissionOkAddInfo',
-  'update:permissionOkPreference'
-])
+const props = defineProps(['formState', 'preferenceText', 'preferenceStatus'])
+const emit = defineEmits(['update:activeKey'])
 
 const status = reactive({ ...props.preferenceStatus })
 const text = reactive({ ...props.preferenceText })
@@ -146,12 +142,10 @@ const handleButton = async () => {
 
   if (validImmobile.valid && validLocation.valid && validPrice.valid) {
     emit('update:activeKey', '3')
-    emit('update:permissionOkAddInfo', false)
   }
 }
 
 const handleBack = async () => {
   emit('update:activeKey', '1')
-  emit('update:permissionOkPreference', true)
 }
 </script>

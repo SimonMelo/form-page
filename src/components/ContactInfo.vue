@@ -67,8 +67,8 @@ import { UserOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons-vue
 import { matchEmail } from '../utils/emailUtils'
 import { matchPhone, maskPhone } from '../utils/phoneUtils'
 
-const emit = defineEmits(['update:activeKey', 'update:permissionOkPreference'])
-const props = defineProps(['formState', 'contactText', 'contactStatus', 'loading'])
+const emit = defineEmits(['update:activeKey'])
+const props = defineProps(['formState', 'contactText', 'contactStatus'])
 
 const localContact = reactive({ ...props.formState })
 const status = reactive({ ...props.contactStatus })
@@ -138,7 +138,6 @@ const handleButton = async () => {
 
   if (validName.valid && validEmail.valid && validPhone.valid) {
     emit('update:activeKey', '2')
-    emit('update:permissionOkPreference', false)
   }
 }
 </script>
