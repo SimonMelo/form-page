@@ -19,5 +19,5 @@ export const formPOST = (body) => {
       addInfo: body?.extra?.addInfo
     }
   }
-  return axios.post('http://localhost:3000/api/submit-form', newData)
+  return axios.post('https://form-search-api.onrender.com/api/submit-form', newData)
 }
