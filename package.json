@@ -15,6 +15,7 @@
     "ant-design-vue": "^4.1.2",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "googleapis": "^142.0.0",
     "vue": "^3.4.21",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.3.0"

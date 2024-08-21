@@ -43,10 +43,12 @@
 import ContactInfo from '../components/ContactInfo.vue'
 import PreferenceInfo from '../components/PreferenceInfo.vue'
 import ExtraInfo from '../components/ExtraInfo.vue'
-import { formPOST } from '../services/submit-form'
 import { ref, reactive } from 'vue'
+import { api } from '@/config/api';
 
 const activeKey = ref('1')
+const SHEET_ID = "1WLxWdHDNrKC01Y7tZ3pbEOUBLb3V2VRq14quy2w6OdI"
+const API_KEY = "AIzaSyAcnqXY5R5zk3c0GwduS2HJ3bKT8yB7JQQ"
 
 const handleUpdateActiveKey = (newValue) => {
   activeKey.value = newValue
@@ -71,7 +73,7 @@ const formState = reactive({
   }
 })
 
-const finallyForm = () => {
+const finallyForm = async () => {
   const { contact, preference, extra } = formState
 
   const formData = {
@@ -92,8 +94,25 @@ const finallyForm = () => {
       addInfo: extra.addInfo
     }
   }
+  const range = 'Sheet1!A1:J1'
+  const valueInput = "RAW"
+  const url = `${SHEET_ID}/values/${range}:append?valueInputOption=${valueInput}&key=${API_KEY}`
 
-  return formPOST(formData)
+  try {
+    const response = await api.post(url, {
+      range: range,
+      majorDimension: 'ROWS',
+      values: [formData]
+    })
+    if (response.status === 200) {
+      console.log('Data appended:', response.data)
+    } else {
+      console.error('Error appending data:', response.status, response.statusText)
+    }
+  } catch (error) {
+    console.error('Error appending data:', error)
+  }
+
 }
 
 const validateStatus = ref({
