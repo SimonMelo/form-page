@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="../../public/img/nameLincolin.png" class="img-fluid centered-image" />
+    <!-- <img src="../../public/img/nameLincolin.png" class="img-fluid centered-image" /> -->
     <section class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
       <div class="card-container">
         <a-tabs v-model:activeKey="activeKey" centered>
@@ -35,7 +35,7 @@
         </a-tabs>
       </div>
     </section>
-    <img src="../../public/img/imovelIcon.png" class="img-fluid centered-image-icon" />
+    <!-- <img src="../../public/img/imovelIcon.png" class="img-fluid centered-image-icon" /> -->
   </div>
 </template>
 
@@ -44,11 +44,10 @@ import ContactInfo from '../components/ContactInfo.vue'
 import PreferenceInfo from '../components/PreferenceInfo.vue'
 import ExtraInfo from '../components/ExtraInfo.vue'
 import { ref, reactive } from 'vue'
-import { api } from '@/config/api';
+import axios from 'axios';
 
 const activeKey = ref('1')
-const SHEET_ID = "1WLxWdHDNrKC01Y7tZ3pbEOUBLb3V2VRq14quy2w6OdI"
-const API_KEY = "AIzaSyAcnqXY5R5zk3c0GwduS2HJ3bKT8yB7JQQ"
+
 
 const handleUpdateActiveKey = (newValue) => {
   activeKey.value = newValue
@@ -74,7 +73,7 @@ const formState = reactive({
 })
 
 const finallyForm = async () => {
-  const { contact, preference, extra } = formState
+  const { contact, preference, extra } = formState;
 
   const formData = {
     contact: {
@@ -93,27 +92,24 @@ const finallyForm = async () => {
       time: extra.time,
       addInfo: extra.addInfo
     }
-  }
-  const range = 'Sheet1!A1:J1'
-  const valueInput = "RAW"
-  const url = `${SHEET_ID}/values/${range}:append?valueInputOption=${valueInput}&key=${API_KEY}`
+  };
 
-  try {
-    const response = await api.post(url, {
-      range: range,
-      majorDimension: 'ROWS',
-      values: [formData]
-    })
-    if (response.status === 200) {
-      console.log('Data appended:', response.data)
-    } else {
-      console.error('Error appending data:', response.status, response.statusText)
-    }
-  } catch (error) {
-    console.error('Error appending data:', error)
-  }
+  // try {
+  //   const response = await axios.post("https://script.google.com/macros/s/AKfycbxfM4v1gTUZPuY1t1Lm-sHdrFBQnm778m4Ey76SGra6yhcRCybQ80ABEf-QfueoYvvqCA/exec", formData, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     }
+  //   });
 
-}
+  //   if (response.status === 200) {
+  //     console.log('Data successfully sent to Google Sheets');
+  //   } else {
+  //     console.error('Error sending data to Google Sheets:', response.status, response.statusText);
+  //   }
+  // } catch (error) {
+  //   console.error('Error sending data to Google Sheets:', error);
+  // }
+};
 
 const validateStatus = ref({
   contactStatus: {

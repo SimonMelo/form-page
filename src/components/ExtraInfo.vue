@@ -83,9 +83,9 @@ const handleButton = () => {
     .finallyForm()
     .then(() => {
       Modal('success', 'Formulário preenchido com sucesso!')
-      setTimeout(() => {
-        window.location.pathname = '/success-form'
-      }, 3000)
+      // setTimeout(() => {
+      //   window.location.pathname = '/success-form'
+      // }, 3000)
     })
     .catch((error) => {
       Modal('error', error ? error.response?.data.error : 'Ocorreu um problema interno.')
